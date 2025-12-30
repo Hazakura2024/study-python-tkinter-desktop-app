@@ -23,16 +23,39 @@ class Application(tkinter.Frame):
         
     # NOTE: ウィジェットを作成する処理を一つにまとめる
     def create_widgets(self):
-        # NOTE: 終了ボタンを作成
+        
+        # 終了ボタン(Button)を作成
         quit_btn = tkinter.Button(self)
         # NOTE: ボタンに表示する文字を設定
         quit_btn['text'] = '閉じる'
         # NOTE: ボタンを押されたら実行される処理
         quit_btn['command'] = self.root.destroy
-        
         # NOTE: 中央に配置
         quit_btn.pack(side='bottom')
+        
+        # テキストボックス(Entry)を作成
+        # NOTE: self.と書くとインスタンスの記憶(状態)を持てるインスタンス変数に
+        # NOTE: self.をつけないと関数が終わったら消えるローカル変数
+        self.text_box = tkinter.Entry(self)
+        self.text_box['width'] = 10
+        self.text_box.pack()
+        
+        
+        # 実行ボタン
+        submit_btn = tkinter.Button(self)
+        submit_btn['text'] = '実行'
+        submit_btn['command'] = self.input_handler
+        submit_btn.pack()
+        
+        
+        # 受け取ったメッセージを表示
+        self.message = tkinter.Message(self)
+        self.message.pack()
 
+    # NOTE: テキストボックスの値を取得
+    def input_handler(self):
+        text = self.text_box.get()
+        self.message['text'] = text + '!'
 
 
 # NOTE: アプリの土台
