@@ -1,4 +1,7 @@
 import tkinter
+from pathlib import Path
+from tkinter import filedialog
+import openpyxl
 
 # NOTE: 部品を一つのまとまりとして扱うクラスを作成、それが書かれたtkinter.Frameクラスを継承
 class Application(tkinter.Frame):
@@ -44,7 +47,7 @@ class Application(tkinter.Frame):
         # 実行ボタン
         submit_btn = tkinter.Button(self)
         submit_btn['text'] = '実行'
-        submit_btn['command'] = self.input_handler
+        submit_btn['command'] = self.save_data
         submit_btn.pack()
         
         
@@ -53,9 +56,23 @@ class Application(tkinter.Frame):
         self.message.pack()
 
     # NOTE: テキストボックスの値を取得
-    def input_handler(self):
+    # def input_handler(self):
+    #     text = self.text_box.get()
+    #     self.message['text'] = text + '!'
+        
+    # NOTE: 
+    def save_data(self):
         text = self.text_box.get()
-        self.message['text'] = text + '!'
+        file_name=tkinter.filedialog.askopenfilename(initialdir=Path.cwd())
+        # file_path=filedialog.askopenfilename(initialdir=Path.cwd())
+        # NOTE: 読込み
+        wb = openpyxl.load_workbook(file_name)
+        # NOTE: 1枚目のシート
+        ws = wb.worksheets[0]
+        ws["b1"].value = text
+        wb.save(file_name)
+        self.message['text'] = '保存完了'
+        
 
 
 # NOTE: アプリの土台
